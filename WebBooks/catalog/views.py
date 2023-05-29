@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import BookInstance, Book, Author, Genre
 from django.views import generic
+from rest_framework import generics
+from serializers import AuthorSerializier
 
 
 # Create your views here.
@@ -35,4 +37,9 @@ def index(request):
                                                   'num_visits': num_visits,
                                                   }
                   # 'num_visits': num_visits},
-    )
+                  )
+
+
+class AuthorAPIView(generics.ListAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializier
