@@ -35,4 +35,4 @@ def index(request):
                                                   'num_visits': num_visits,
                                                   }
                   # 'num_visits': num_visits},
-                  )
+    )

@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from catalog import views
-# from WebBooks.catalog import views
-# from WebBooks.catalog import views
+
 
 urlpatterns = [
     path('', views.index, name='index'),
