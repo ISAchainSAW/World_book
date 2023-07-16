@@ -24,9 +24,9 @@ class Author(models.Model):
     date_of_birth = models.DateField(help_text="Введите дату рождения", verbose_name="Дата рождения", null=True,
                                      blank=True)
     date_of_death = models.DateField(help_text="Введите дату смерти", verbose_name="Дата смерти", null=True, blank=True)
-
     def __str__(self):
         return self.last_name
+
 
 
 class Book(models.Model):

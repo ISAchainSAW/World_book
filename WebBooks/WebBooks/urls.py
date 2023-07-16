@@ -7,6 +7,7 @@ from catalog.views import AuthorAPIView
 urlpatterns = [
     path('', views.index, name='index'),
     path('api/v1/authorlist/', AuthorAPIView.as_view()),
+    path('api/v1/authorlist/<int:pk>/', AuthorAPIView.as_view()),
     path('admin/', admin.site.urls),
     path(r'^books/$', views.BookListView.as_view(), name='books'),
     path(r'^book/(?P<pk>\d+)$', views.BookDetailView.as_view(), name='book-detail'),

@@ -1,9 +1,11 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
 from .models import BookInstance, Book, Author, Genre
 from django.views import generic
-from rest_framework import generics
-from serializers import AuthorSerializier
+from .serializers import AuthorSerializier
+
 
 
 # Create your views here.
@@ -36,10 +38,39 @@ def index(request):
                                                   'num_authors': num_authors,
                                                   'num_visits': num_visits,
                                                   }
-                  # 'num_visits': num_visits},
-                  )
+    )
 
 
-class AuthorAPIView(generics.ListAPIView):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializier
+class AuthorAPIView(APIView):
+
+    def get(self, request):
+
+        w = Author.objects.all()
+        serializer = AuthorSerializier(data=request.data)
+        return Response({'get': AuthorSerializier(w, many=True).data})
+
+    def post(self, request):
+        serializer = AuthorSerializier(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({'post': serializer.data})
+
+    def put(self, request, *args, **kwargs):
+        pk = kwargs.get("pk", None)
+        if not pk:
+            return Response({"error": "Method PUT not allowed"})
+        try:
+            instance = Author.objects.get(pk=pk)
+        except:
+            return Response({"error": "Method Put not allowed"})
+
+        serializer = AuthorSerializier(data=request.data, instance=instance)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"post": serializer.data})
+
+    def delete(self, request, pk, format=None):
+        instance = Author.objects.get(pk=pk)
+        instance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
